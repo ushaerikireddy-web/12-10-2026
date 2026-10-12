@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{# Shared student layout with sidebar. Usage: {% extends "student_base.html" %} + fill content_block #}
+{% block page_wrapper %}
+<div class="container my-4">
+  <div class="row g-4">
+    <div class="col-lg-3">
+      <aside class="vidya-sidebar">
+        <div class="profile-head d-flex align-items-center gap-3">
+          <span class="vidya-logo-badge"><i class="bi bi-person-fill"></i></span>
+          {% if user.is_authenticated %}<div><strong>{{ user.username }}</strong><br><small class="opacity-75">{{ user.get_role_display }} · VIDYA Learner</small></div>
+          {% else %}<div><strong>VIDYA Learner</strong><br><small class="opacity-75"><a class="text-warning" href="{% url 'accounts:login' %}">Login</a> to track progress</small></div>{% endif %}
+        </div>
+        <nav class="py-2">
+          <a class="side-link" data-nav-match="/dashboard" href="{% url 'dashboard:home' %}"><i class="bi bi-speedometer2"></i>Dashboard</a>
+          <a class="side-link" data-nav-match="/courses/my" href="{% url 'courses:my-courses' %}"><i class="bi bi-collection-play"></i>My Courses</a>
+          <a class="side-link" data-nav-match="/courses/lectures" href="{% url 'courses:video-lectures' %}"><i class="bi bi-play-circle"></i>Video Lectures</a>
+          <a class="side-link" data-nav-match="/assignments" href="{% url 'assignments:assignment-list' %}"><i class="bi bi-journal-text"></i>Assignments</a>
+          <a class="side-link" data-nav-match="/quizzes" href="{% url 'quizzes:test-list' %}"><i class="bi bi-patch-question"></i>Test Papers</a>
+          <a class="side-link" data-nav-match="/accounts/profile" href="{% url 'accounts:profile' %}"><i class="bi bi-person"></i>My Profile</a>
+          <a class="side-link" data-nav-match="/certificates" href="{% url 'certificates:certificate-list' %}"><i class="bi bi-award"></i>Certificates</a>
+          <a class="side-link" href="{% url 'courses:course-list' %}"><i class="bi bi-grid"></i>Browse Catalog</a>
+          <a class="side-link text-danger" href="{% url 'accounts:logout' %}"><i class="bi bi-box-arrow-right"></i>Logout</a>
+        </nav>
+      </aside>
+    </div>
+    <div class="col-lg-9">
+      {% block content_block %}{% endblock %}
+    </div>
+  </div>
+</div>
+{% endblock %}

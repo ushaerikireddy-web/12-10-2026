@@ -1,6 +1,25 @@
 {% extends "base.html" %}
-{% block title %}About — {{ PLATFORM_NAME }}{% endblock %}
-{% block content %}<h2>{{ about.title|default:"About Us" }}</h2>
-{% if about %}<h4>Mission</h4><p>{{ about.mission|linebreaks }}</p><h4>Vision</h4><p>{{ about.vision|linebreaks }}</p><h4>Learning Objectives</h4><p>{{ about.objectives|linebreaks }}</p><h4>History</h4><p>{{ about.history|linebreaks }}</p>
-{% else %}<p>Welcome to {{ PLATFORM_NAME }}, an online learning platform. Content coming soon.</p>{% endif %}
+{% block title %}About Us — VIDYA{% endblock %}
+{% block content %}
+<section class="vidya-hero p-4 p-md-5 mb-4"><div class="hero-pattern"></div>
+<div class="position-relative"><span class="badge bg-warning text-dark">About VIDYA</span>
+<h1 class="display-6 fw-bold">Where Knowledge Becomes Power.</h1>
+<p class="lead opacity-75">VIDYA is a modern online learning platform with an emerald-and-gold identity — courses, video lectures, assignments, practice tests and verified certificates, all running on a Django + MySQL-ready backend.</p></div></section>
+<div class="row g-3">
+  <div class="col-md-4"><div class="vidya-content-card h-100"><div class="benefit-icon mb-2"><i class="bi bi-bullseye"></i></div><h4>Our Mission</h4><p class="text-muted">Make high-quality, mentored learning affordable and accessible — every learner can enroll, track progress and earn proof of skill.</p></div></div>
+  <div class="col-md-4"><div class="vidya-content-card h-100"><div class="benefit-icon mb-2"><i class="bi bi-eye"></i></div><h4>Our Vision</h4><p class="text-muted">A world where anyone with curiosity can build a career — guided by expert instructors, structured curriculum and honest feedback.</p></div></div>
+  <div class="col-md-4"><div class="vidya-content-card h-100"><div class="benefit-icon mb-2"><i class="bi bi-gem"></i></div><h4>Our Values</h4><ul class="text-muted"><li>Learner-first design</li><li>Real projects & feedback</li><li>Transparent progress & certificates</li><li>Secure, maintainable engineering</li></ul></div></div>
+</div>
+<div class="vidya-content-card mt-3">
+  <h3>Why choose VIDYA?</h3>
+  <div class="row g-3 mt-1">
+    <div class="col-md-3"><strong><i class="bi bi-check-circle-fill text-success me-1"></i>Structured paths</strong><p class="small text-muted">Modules → lessons → assignments → certificate eligibility.</p></div>
+    <div class="col-md-3"><strong><i class="bi bi-check-circle-fill text-success me-1"></i>Server-tracked progress</strong><p class="small text-muted">70% lessons / 30% assignments, auto-recalculated.</p></div>
+    <div class="col-md-3"><strong><i class="bi bi-check-circle-fill text-success me-1"></i>Verified proof</strong><p class="small text-muted">PDF certificates with public verification codes.</p></div>
+    <div class="col-md-3"><strong><i class="bi bi-check-circle-fill text-success me-1"></i>Practice safely</strong><p class="small text-muted">Timed demo quizzes scored instantly in-browser.</p></div>
+  </div>
+  {% if object and object.content %}<hr><div>{{ object.content|linebreaks }}</div>{% endif %}
+  <a class="btn btn-emerald mt-2" href="{% url 'courses:course-list' %}">Browse Courses</a>
+  <a class="btn btn-outline-secondary mt-2" href="{% url 'pages:contact' %}">Contact Us</a>
+</div>
 {% endblock %}

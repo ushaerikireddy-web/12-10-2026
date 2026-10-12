@@ -1,5 +1,14 @@
-{% extends "base.html" %}
-{% block title %}My Certificates — {{ PLATFORM_NAME }}{% endblock %}
-{% block content %}<h2>My Certificates</h2>
-<ul class="list-group">{% for c in certificates %}<li class="list-group-item d-flex justify-content-between"><a href="{% url 'certificates:certificate-detail' c.pk %}">{{ c.course.title }} — {{ c.certificate_id }}</a><a class="btn btn-sm btn-outline-primary" href="{% url 'certificates:certificate-download' c.pk %}">Download</a></li>{% empty %}<li class="list-group-item">No certificates yet. Complete a course to earn one.</li>{% endfor %}</ul>
+{% extends "student_base.html" %}
+{% block title %}My Certificates — VIDYA{% endblock %}
+{% block content_block %}
+<div class="vidya-content-card mb-3"><h2 class="mb-1"><i class="bi bi-award me-1"></i>My Certificates</h2><p class="text-muted small mb-0">Eligibility-gated on the server (course must be complete). Verify any code <a href="{% url 'certificates:certificate-verify' %}">here</a>.</p></div>
+<div class="row g-3">
+{% for c in certificates %}
+  <div class="col-md-6"><div class="card vidya-card"><div class="card-body">
+    <h5>{{ c.course.title }}</h5><p class="small text-muted mb-1">ID: <code>{{ c.certificate_id }}</code> · Issued {{ c.issue_date|date:"M d, Y" }}</p>
+    <a class="btn btn-emerald btn-sm" href="{% url 'certificates:certificate-detail' c.pk %}">View</a>
+    <a class="btn btn-outline-secondary btn-sm" href="{% url 'certificates:certificate-download' c.pk %}">Download PDF</a>
+  </div></div></div>
+{% empty %}<div class="col-12"><div class="alert alert-info">No certificates yet. Complete a course to earn one.</div></div>{% endfor %}
+</div>
 {% endblock %}

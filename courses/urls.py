@@ -13,12 +13,16 @@ from .views import (
     LessonUpdateView,
     ModuleCreateView,
     ModuleUpdateView,
+    MyCoursesView,
+    VideoLecturesView,
 )
 
 app_name = 'courses'
 
 urlpatterns = [
     path('', CourseListView.as_view(), name='course-list'),
+    path('my/', MyCoursesView.as_view(), name='my-courses'),
+    path('lectures/', VideoLecturesView.as_view(), name='video-lectures'),
     path('create/', CourseCreateView.as_view(), name='course-create'),
     path('<slug:slug>/', CourseDetailView.as_view(), name='course-detail'),
     path('<slug:slug>/edit/', CourseUpdateView.as_view(), name='course-edit'),

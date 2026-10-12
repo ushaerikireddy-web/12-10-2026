@@ -1,29 +1,100 @@
 {% extends "base.html" %}
-{% block title %}Courses — {{ PLATFORM_NAME }}{% endblock %}
+{% block title %}VIDYA — {{ PLATFORM_TAGLINE }}{% endblock %}
 {% block content %}
+<!-- HERO -->
+<section class="vidya-hero p-4 p-md-5 mb-4">
+  <div class="hero-pattern"></div>
+  <div class="row align-items-center position-relative">
+    <div class="col-lg-7">
+      <span class="badge bg-warning text-dark mb-2"><i class="bi bi-stars me-1"></i>Admissions open · New batches</span>
+      <h1 class="display-5 fw-bold">Where Knowledge<br>Becomes <span class="text-warning">Power.</span></h1>
+      <p class="lead opacity-75">Learn job-ready skills with expert instructors, video lectures, assignments, quizzes and verified certificates — powered by the VIDYA Django backend.</p>
+      <div class="d-flex gap-2 flex-wrap">
+        <a href="#catalog" class="btn btn-gold btn-lg"><i class="bi bi-play-fill me-1"></i>Explore Courses</a>
+        {% if user.is_authenticated %}<a href="{% url 'dashboard:home' %}" class="btn btn-outline-light btn-lg">My Dashboard</a>
+        {% else %}<a href="{% url 'accounts:register' %}" class="btn btn-outline-light btn-lg">Join Free</a>{% endif %}
+      </div>
+      <div class="d-flex gap-4 mt-4 small">
+        <span><i class="bi bi-check-circle-fill text-warning me-1"></i>Expert mentors</span>
+        <span><i class="bi bi-check-circle-fill text-warning me-1"></i>Certificates</span>
+        <span><i class="bi bi-check-circle-fill text-warning me-1"></i>Learn anytime</span>
+      </div>
+    </div>
+    <div class="col-lg-5 mt-4 mt-lg-0">
+      <div class="bg-white text-dark rounded-4 p-4 shadow">
+        <h5 class="fw-bold"><i class="bi bi-search me-1"></i>Find your course</h5>
+        <form method="get" action="#catalog" class="row g-2">
+          <div class="col-12"><input name="q" value="{{ request.GET.q }}" id="vidya-course-search" class="form-control form-control-lg" placeholder="Search Python, Design, Marketing..."></div>
+          <div class="col-6"><select name="category" class="form-select"><option value="">All categories</option>{% for c in categories %}<option value="{{ c.id }}" {% if request.GET.category == c.id|stringformat:"s" %}selected{% endif %}>{{ c.name }}</option>{% endfor %}</select></div>
+          <div class="col-6"><select name="difficulty" class="form-select"><option value="">All levels</option><option value="BEGINNER" {% if request.GET.difficulty == "BEGINNER" %}selected{% endif %}>Beginner</option><option value="INTERMEDIATE" {% if request.GET.difficulty == "INTERMEDIATE" %}selected{% endif %}>Intermediate</option><option value="ADVANCED" {% if request.GET.difficulty == "ADVANCED" %}selected{% endif %}>Advanced</option></select></div>
+          <div class="col-12"><button class="btn btn-emerald w-100">Search Courses</button></div>
+        </form>
+        <small class="text-muted">Server-side search (Django) + instant browser filter as you type.</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="row g-3 mb-5 text-center">
+  <div class="col-6 col-md-3"><div class="vidya-stat p-3"><div class="num">{{ page_obj.paginator.count|default:courses|length }}+</div><div class="small text-muted">Published courses</div></div></div>
+  <div class="col-6 col-md-3"><div class="vidya-stat p-3"><div class="num">{{ categories|length }}+</div><div class="small text-muted">Categories</div></div></div>
+  <div class="col-6 col-md-3"><div class="vidya-stat p-3"><div class="num">12k+</div><div class="small text-muted">Happy learners</div></div></div>
+  <div class="col-6 col-md-3"><div class="vidya-stat p-3"><div class="num">4.8<i class="bi bi-star-fill text-warning ms-1" style="font-size:1rem"></i></div><div class="small text-muted">Average rating</div></div></div>
+</section>
+
+<!-- CATEGORIES -->
+<h5><span class="vidya-eyebrow">Categories</span></h5>
+<h2 class="vidya-section-title mb-3">Browse by <span>category</span></h2>
+<div class="d-flex gap-2 flex-wrap mb-4">
+  <button class="category-pill active" data-cat="">All</button>
+  {% for c in categories %}<button class="category-pill" data-cat="{{ c.name }}">{{ c.name }}</button>{% endfor %}
+</div>
+
+<!-- CATALOG -->
+<h5 id="catalog"><span class="vidya-eyebrow">Popular courses</span></h5>
 <div class="d-flex justify-content-between align-items-center mb-3">
-<h2>Courses</h2>
-{% if user.is_authenticated and user.is_instructor %}<a class="btn btn-success" href="{% url 'courses:course-create' %}">+ New Course</a>{% endif %}
+  <h2 class="vidya-section-title mb-0">Learn what's <span>in demand</span></h2>
+  {% if user.is_authenticated and user.is_instructor %}<a class="btn btn-emerald btn-sm" href="{% url 'courses:course-create' %}">+ New Course</a>{% endif %}
 </div>
-<form method="get" class="row g-2 mb-3">
-<div class="col-md-4"><input name="q" value="{{ request.GET.q }}" class="form-control" placeholder="Search courses..."></div>
-<div class="col-md-3"><select name="category" class="form-select"><option value="">All categories</option>{% for c in categories %}<option value="{{ c.id }}" {% if request.GET.category == c.id|stringformat:"s" %}selected{% endif %}>{{ c.name }}</option>{% endfor %}</select></div>
-<div class="col-md-3"><select name="difficulty" class="form-select"><option value="">All levels</option><option value="BEGINNER">Beginner</option><option value="INTERMEDIATE">Intermediate</option><option value="ADVANCED">Advanced</option></select></div>
-<div class="col-md-2"><button class="btn btn-primary w-100">Filter</button></div>
-</form>
-<div class="row">
+<div class="row g-4" id="vidya-course-grid">
 {% for course in courses %}
-<div class="col-md-4 mb-3"><div class="card h-100">
-{% if course.thumbnail %}<img src="{{ course.thumbnail.url }}" class="card-img-top" style="height:160px;object-fit:cover">{% endif %}
-<div class="card-body">
-<h5 class="card-title"><a href="{{ course.get_absolute_url }}">{{ course.title }}</a></h5>
-<p class="card-text text-muted small">{{ course.description|truncatewords:18 }}</p>
-<span class="badge bg-secondary">{{ course.difficulty }}</span>
-<span class="badge bg-info">{{ course.category|default:"Uncategorized" }}</span>
-{% if course.id in enrolled_ids %}<span class="badge bg-success">Enrolled</span>{% endif %}
-<p class="mt-2 fw-bold">{% if course.is_free %}Free{% else %}${{ course.price }}{% endif %}</p>
-</div></div></div>
-{% empty %}<p>No courses found.</p>{% endfor %}
+  <div class="col-md-6 col-lg-4 vidya-card-wrap" data-category="{{ course.category|default:'General' }}">
+    <div class="card vidya-card h-100">
+      {% if course.thumbnail %}<img src="{{ course.thumbnail.url }}" class="card-img-top" alt="{{ course.title }}">
+      {% else %}<div class="card-img-top d-flex align-items-center justify-content-center text-white" style="background:linear-gradient(135deg,#084d39,#17a37a)"><i class="bi bi-book-half" style="font-size:3rem"></i></div>{% endif %}
+      <div class="card-body">
+        <span class="badge bg-success-subtle text-success border">{{ course.difficulty }}</span>
+        <span class="badge vidya-badge-gold">{{ course.category|default:"General" }}</span>
+        {% if course.id in enrolled_ids %}<span class="badge bg-success">Enrolled</span>{% endif %}
+        <h5 class="mt-2"><a class="text-decoration-none text-dark" href="{{ course.get_absolute_url }}">{{ course.title }}</a></h5>
+        <p class="text-muted small">{{ course.description|truncatewords:16 }}</p>
+        <p class="small text-muted mb-1"><i class="bi bi-person-video3 me-1"></i>{{ course.instructor.username }} · <i class="bi bi-star-fill text-warning"></i> 4.8 · <i class="bi bi-play-circle"></i> {{ course.lesson_count }} lessons</p>
+        <div class="d-flex justify-content-between align-items-center">
+          <span class="price fs-5">{% if course.is_free %}Free{% else %}₹{{ course.price }}{% endif %}</span>
+          <a href="{{ course.get_absolute_url }}" class="btn btn-emerald btn-sm">View Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% empty %}<div class="col-12"><div class="alert alert-info">No courses found. Try clearing filters.</div></div>{% endfor %}
 </div>
-{% if is_paginated %}<nav><ul class="pagination">{% if page_obj.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q }}&category={{ request.GET.category }}&difficulty={{ request.GET.difficulty }}">Prev</a></li>{% endif %}<li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>{% if page_obj.has_next %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q }}&category={{ request.GET.category }}&difficulty={{ request.GET.difficulty }}">Next</a></li>{% endif %}</ul></nav>{% endif %}
+{% if is_paginated %}<nav class="mt-4"><ul class="pagination justify-content-center">{% if page_obj.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q }}&category={{ request.GET.category }}&difficulty={{ request.GET.difficulty }}#catalog">Prev</a></li>{% endif %}<li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>{% if page_obj.has_next %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q }}&category={{ request.GET.category }}&difficulty={{ request.GET.difficulty }}#catalog">Next</a></li>{% endif %}</ul></nav>{% endif %}
+
+<!-- BENEFITS -->
+<section class="row g-3 my-5">
+  <div class="col-12"><h2 class="vidya-section-title">Why choose <span>VIDYA?</span></h2></div>
+  <div class="col-md-3"><div class="vidya-content-card h-100"><div class="benefit-icon mb-2"><i class="bi bi-play-btn"></i></div><h6>HD Video Lectures</h6><p class="small text-muted">Watch lessons, track progress and resume anytime. Served from the Django media backend.</p></div></div>
+  <div class="col-md-3"><div class="vidya-content-card h-100"><div class="benefit-icon mb-2"><i class="bi bi-journal-check"></i></div><h6>Assignments & Feedback</h6><p class="small text-muted">Submit work, get instructor grades and late-policy handling built in.</p></div></div>
+  <div class="col-md-3"><div class="vidya-content-card h-100"><div class="benefit-icon mb-2"><i class="bi bi-patch-question"></i></div><h6>Tests & Quizzes</h6><p class="small text-muted">Timed practice tests plus instant browser-scored demo quizzes.</p></div></div>
+  <div class="col-md-3"><div class="vidya-content-card h-100"><div class="benefit-icon mb-2"><i class="bi bi-award"></i></div><h6>Verified Certificates</h6><p class="small text-muted">Eligibility-gated PDF certificates with public verification codes.</p></div></div>
+</section>
+
+<!-- TESTIMONIALS -->
+<h2 class="vidya-section-title mb-3">Loved by <span>learners</span></h2>
+<div class="row g-3 mb-2">
+  <div class="col-md-4"><div class="testimonial p-4 h-100"><p>"VIDYA's Python track took me from zero to placed. Progress bars kept me honest!"</p><strong>Ananya S.</strong><br><small class="text-muted">Python Developer · <i class="bi bi-star-fill text-warning"></i>5.0</small></div></div>
+  <div class="col-md-4"><div class="testimonial p-4 h-100"><p>"Video + assignments + quick quizzes — the perfect loop. Certificates verified by my employer."</p><strong>Rahul V.</strong><br><small class="text-muted">Data Analyst · <i class="bi bi-star-fill text-warning"></i>4.9</small></div></div>
+  <div class="col-md-4"><div class="testimonial p-4 h-100"><p>"Clean UI, fast search, supportive mentors. Best emerald-themed LMS I've used."</p><strong>Priya M.</strong><br><small class="text-muted">UI Designer · <i class="bi bi-star-fill text-warning"></i>4.8</small></div></div>
+</div>
 {% endblock %}

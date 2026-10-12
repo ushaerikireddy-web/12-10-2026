@@ -1,8 +1,20 @@
-{% extends "base.html" %}
-{% block title %}Assignments — {{ PLATFORM_NAME }}{% endblock %}
-{% block content %}
-<div class="d-flex justify-content-between mb-3"><h2>Assignments</h2>
-{% if user.is_instructor %}<a class="btn btn-success" href="{% url 'assignments:assignment-create' %}">+ New Assignment</a>{% endif %}</div>
-<ul class="list-group">{% for a in assignments %}<li class="list-group-item d-flex justify-content-between"><a href="{% url 'assignments:assignment-detail' a.pk %}">{{ a.course.title }} — {{ a.title }}</a><small class="text-muted">due {{ a.due_date|default:"—" }}</small></li>{% empty %}<li class="list-group-item">No assignments.</li>{% endfor %}</ul>
+{% extends "student_base.html" %}
+{% block title %}Assignments — VIDYA{% endblock %}
+{% block content_block %}
+<div class="vidya-content-card mb-3 d-flex justify-content-between align-items-center">
+  <div><h2 class="mb-0"><i class="bi bi-journal-text me-1"></i>Assignments</h2><p class="text-muted small mb-0">Instructions, deadlines & pending/submitted status. Server-graded; buttons below give instant demo feedback.</p></div>
+  {% if user.is_instructor %}<a class="btn btn-emerald btn-sm" href="{% url 'assignments:assignment-create' %}">+ New Assignment</a>{% endif %}
+</div>
+<div class="row g-3">
+{% for a in assignments %}
+  <div class="col-md-6"><div class="card vidya-card h-100"><div class="card-body">
+    <span class="badge vidya-badge-gold">{{ a.course.title }}</span>
+    <h5 class="mt-2">{{ a.title }}</h5>
+    <p class="small text-muted">{{ a.description|truncatewords:20 }}</p>
+    <p class="small mb-1"><i class="bi bi-calendar-event me-1"></i>Due: {{ a.due_date|default:"—" }} · <i class="bi bi-star ms-2 me-1"></i>{{ a.max_marks }} marks</p>
+    <div class="d-flex gap-2"><a class="btn btn-emerald btn-sm" href="{% url 'assignments:assignment-detail' a.pk %}">View & Submit</a><button class="btn btn-outline-secondary btn-sm" data-assignment-demo>Demo Submit</button></div>
+  </div></div></div>
+{% empty %}<div class="col-12"><div class="alert alert-info">No assignments.</div></div>{% endfor %}
+</div>
 {% if is_paginated %}<nav class="mt-3"><ul class="pagination"><li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li></ul></nav>{% endif %}
 {% endblock %}

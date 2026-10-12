@@ -11,7 +11,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'dev-insecure-change-me')
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = [h.strip() for h in os.environ.get('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',') if h.strip()]
 
-PLATFORM_NAME = os.environ.get('PLATFORM_NAME', 'LearnHub')
+PLATFORM_NAME = os.environ.get('PLATFORM_NAME', 'VIDYA')
+PLATFORM_TAGLINE = os.environ.get('PLATFORM_TAGLINE', 'Where Knowledge Becomes Power.')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -30,6 +31,7 @@ INSTALLED_APPS = [
     'certificates.apps.CertificatesConfig',
     'pages.apps.PagesConfig',
     'dashboard.apps.DashboardConfig',
+    'quizzes.apps.QuizzesConfig',
 ]
 
 MIDDLEWARE = [

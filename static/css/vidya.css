@@ -1,0 +1,84 @@
+/* VIDYA — Emerald + Champagne Gold + White theme */
+:root{
+  --vidya-emerald:#0b6b4f; --vidya-emerald-dark:#084d39; --vidya-emerald-light:#e6f4ee;
+  --vidya-gold:#c9a227; --vidya-gold-light:#f5e9c8; --vidya-ink:#1d2b26;
+  --vidya-muted:#5f716b; --vidya-card-shadow:0 10px 30px rgba(8,77,57,.10);
+  --vidya-radius:1rem;
+}
+*{scroll-behavior:smooth}
+html,body{overflow-x:clip}
+body{font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;color:var(--vidya-ink);background:#fbfdfc;min-width:0}
+h1,h2,h3,h4{font-family:'Plus Jakarta Sans','Inter','Segoe UI',sans-serif;letter-spacing:-.01em}
+
+/* Navbar */
+.vidya-nav{background:linear-gradient(90deg,var(--vidya-emerald-dark),var(--vidya-emerald));box-shadow:0 4px 18px rgba(8,77,57,.25);width:100%}
+.vidya-nav .container{flex-wrap:wrap;min-width:0}
+.vidya-nav .navbar-collapse{min-width:0}
+@media (max-width:1399px){
+  .vidya-nav .nav-link{padding:.45rem .6rem!important;font-size:.93rem}
+  .vidya-nav .navbar-brand{font-size:1rem}
+}
+.vidya-nav .navbar-brand{font-weight:800;letter-spacing:.06em;display:flex;align-items:center;gap:.5rem}
+.vidya-logo-badge{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--vidya-gold),#f4d97b);display:inline-flex;align-items:center;justify-content:center;color:#084d39;font-size:1.3rem;box-shadow:inset 0 0 0 2px rgba(255,255,255,.5)}
+.vidya-nav .nav-link{color:#e9f5ef!important;font-weight:500;border-radius:.6rem;padding:.45rem .8rem!important;line-height:1.5;white-space:nowrap;align-items:center}
+.vidya-nav .nav-link:hover,.vidya-nav .nav-link.active{background:rgba(255,255,255,.14);color:#fff!important}
+.vidya-nav .navbar-nav{gap:.15rem}
+.vidya-nav .navbar-nav .btn-gold{line-height:1.5;white-space:nowrap}
+.btn-gold{background:linear-gradient(135deg,var(--vidya-gold),#e3be4a);border:none;color:#2b2205;font-weight:700}
+.btn-gold:hover{filter:brightness(1.05);color:#2b2205}
+.btn-emerald{background:var(--vidya-emerald);border:none;color:#fff;font-weight:600}
+.btn-emerald:hover{background:var(--vidya-emerald-dark);color:#fff}
+
+/* Hero */
+.vidya-hero{background:radial-gradient(1000px 400px at 15% 10%,rgba(201,162,39,.25),transparent),linear-gradient(120deg,#084d39 0%,#0b6b4f 55%,#0e7d5c 100%);color:#fff;border-radius:1.5rem;overflow:hidden;position:relative}
+.vidya-hero .hero-pattern{position:absolute;inset:0;opacity:.12;background-image:radial-gradient(#fff 1.5px,transparent 1.5px);background-size:22px 22px}
+.vidya-stat{background:#fff;border-radius:var(--vidya-radius);box-shadow:var(--vidya-card-shadow);border-top:4px solid var(--vidya-gold)}
+.vidya-stat .num{font-size:1.9rem;font-weight:800;color:var(--vidya-emerald)}
+
+/* Cards */
+.vidya-card{border:none;border-radius:var(--vidya-radius);box-shadow:var(--vidya-card-shadow);overflow:hidden;transition:transform .2s ease,box-shadow .2s ease;background:#fff}
+.vidya-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(8,77,57,.16)}
+.vidya-card .card-img-top{height:170px;object-fit:cover}
+.vidya-card .price{font-weight:800;color:var(--vidya-emerald)}
+.vidya-badge-gold{background:var(--vidya-gold-light);color:#7a5f0a;border:1px solid #e7d48b}
+.vidya-section-title{font-weight:800}
+.vidya-section-title span{color:var(--vidya-emerald)}
+.vidya-eyebrow{display:inline-block;font-size:.75rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--vidya-emerald);background:var(--vidya-emerald-light);padding:.35rem .7rem;border-radius:999px}
+.category-pill{border:1.5px solid #d9e8e1;background:#fff;border-radius:999px;padding:.6rem 1rem;font-weight:600;transition:.2s}
+.category-pill:hover,.category-pill.active{background:var(--vidya-emerald);color:#fff;border-color:var(--vidya-emerald)}
+.testimonial{background:#fff;border-radius:var(--vidya-radius);box-shadow:var(--vidya-card-shadow);border-left:5px solid var(--vidya-gold)}
+.benefit-icon{width:52px;height:52px;border-radius:16px;background:var(--vidya-emerald-light);color:var(--vidya-emerald);display:flex;align-items:center;justify-content:center;font-size:1.5rem}
+
+/* Sidebar */
+.vidya-sidebar{background:#fff;border-radius:1.2rem;box-shadow:var(--vidya-card-shadow);overflow:hidden;position:sticky;top:90px}
+.vidya-sidebar .profile-head{background:linear-gradient(135deg,var(--vidya-emerald-dark),var(--vidya-emerald));color:#fff;padding:1.2rem}
+.vidya-sidebar a.side-link{display:flex;align-items:center;gap:.7rem;padding:.7rem 1.1rem;color:#33463f;text-decoration:none;font-weight:600;border-left:4px solid transparent}
+.vidya-sidebar a.side-link:hover{background:var(--vidya-emerald-light)}
+.vidya-sidebar a.side-link.active{background:var(--vidya-emerald-light);border-left-color:var(--vidya-gold);color:var(--vidya-emerald-dark)}
+.vidya-content-card{background:#fff;border-radius:1.2rem;box-shadow:var(--vidya-card-shadow);padding:1.5rem}
+
+/* Certificate */
+.vidya-certificate{border:10px double var(--vidya-gold);border-radius:1.2rem;background:linear-gradient(180deg,#fffdf4,#fff);padding:2.5rem;position:relative}
+.vidya-certificate .seal{width:90px;height:90px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#f4d97b,var(--vidya-gold));display:flex;align-items:center;justify-content:center;font-size:2rem;color:#084d39;box-shadow:0 8px 20px rgba(201,162,39,.4)}
+@media print{.vidya-no-print{display:none!important}body{background:#fff}.vidya-certificate{box-shadow:none}}
+
+/* Video + quiz */
+.vidya-video-wrap{background:#0c1f19;border-radius:1.2rem;overflow:hidden;box-shadow:var(--vidya-card-shadow)}
+.lesson-item.active{background:var(--vidya-emerald-light);border-left:4px solid var(--vidya-gold)}
+.progress{height:.65rem;border-radius:999px}
+.progress-bar{background:linear-gradient(90deg,var(--vidya-emerald),#17a37a)}
+.quiz-option{border:1.5px solid #d9e8e1;border-radius:.8rem;padding:.7rem .9rem;cursor:pointer;transition:.15s;background:#fff}
+.quiz-option:hover{border-color:var(--vidya-emerald)}
+.quiz-option.selected{border-color:var(--vidya-emerald);background:var(--vidya-emerald-light)}
+.quiz-timer{font-variant-numeric:tabular-nums;font-weight:800}
+
+/* Footer */
+.vidya-footer{background:linear-gradient(180deg,#084d39,#062e23);color:#d7e9e1}
+.vidya-footer a{color:#f0d98a;text-decoration:none}
+.vidya-footer a:hover{color:#fff}
+
+/* Toasts */
+#vidya-toasts{position:fixed;top:80px;right:16px;z-index:1080;display:flex;flex-direction:column;gap:.5rem}
+.vidya-toast{background:#0c1f19;color:#fff;border-left:5px solid var(--vidya-gold);border-radius:.8rem;padding:.7rem 1rem;box-shadow:0 12px 30px rgba(0,0,0,.25);min-width:260px}
+.vidya-toast.error{border-left-color:#e05b5b}
+.vidya-toast.success{border-left-color:#25b981}

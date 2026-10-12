@@ -1,6 +1,18 @@
-# Online Student Learning Platform — Backend (Django + MySQL)
+# VIDYA — Online Learning Platform (Django Backend + VIDYA Frontend)
 
-Complete backend for an online learning platform. Bootstrap-compatible server-rendered templates + DRF read API for JS frontends.
+"Where Knowledge Becomes Power." Emerald Green + Champagne Gold + White theme, Bootstrap 5 + Bootstrap Icons.
+
+## VIDYA frontend (new)
+- Theme: `templates/base.html` + `templates/student_base.html` (public navbar + student sidebar), `static/css/vidya.css`, `static/js/vidya.js`.
+- Home/Catalog: `GET /courses/` — hero, stats, categories, searchable course cards, testimonials, benefits.
+- Course details: `/courses/<slug>/` — overview, instructor card, curriculum, Enroll (server) + Buy demo button.
+- Video lectures: `/courses/lessons/<pk>/` — player, contents nav, Mark Complete (server), browser-only comments (localStorage).
+- My Courses: `/courses/my/` (login) — enrolled cards with animated progress.
+- Tests & Quiz (demo, login): `/quizzes/tests/`, `/quizzes/quiz/<slug>/` — countdown timer + browser-scored result screen.
+- Certificates: list/detail with elegant print layout (`Print / Save as PDF` → `window.print()`) + server PDF download + `/certificates/verify/`.
+- Auth: login (show/hide password, remember-me demo), register (client + Django validation).
+- JS (`vidya.js`): toasts for Django messages, active nav, catalog quick-filter, purchase/assignment demo feedback, quiz engine, comments, certificate print.
+- Demo honesty: footer + page notices state that enrollment/progress/certificates/assignments are real server features, while quiz scores, comments and purchase previews are browser-only demos.
 
 ## Apps
 | App | Responsibility |

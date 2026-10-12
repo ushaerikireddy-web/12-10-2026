@@ -18,6 +18,7 @@ urlpatterns = [
     path('certificates/', include('certificates.urls')),
     path('pages/', include('pages.urls')),
     path('dashboard/', include('dashboard.urls')),
+    path('quizzes/', include('quizzes.urls')),
     path('api/', include('config.api_urls')),
     path('', RedirectView.as_view(pattern_name='courses:course-list', permanent=False)),
 ]

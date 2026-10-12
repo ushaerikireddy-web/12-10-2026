@@ -15,6 +15,41 @@ from .models import Course, Enrollment, Lesson, LessonProgress, Module
 from .services import mark_lesson_complete, recalculate_enrollment_progress
 
 
+class MyCoursesView(LoginRequiredMixin, ListView):
+    template_name = 'courses/my_courses.html'
+    context_object_name = 'enrollments'
+
+    def get_queryset(self):
+        return Enrollment.objects.filter(student=self.request.user).select_related('course', 'course__category').order_by('-enrolled_at')
+
+
+class VideoLecturesView(LoginRequiredMixin, ListView):
+    template_name = 'courses/video_lectures.html'
+    context_object_name = 'lessons'
+    paginate_by = 20
+
+    def get_queryset(self):
+        enrolled_course_ids = Enrollment.objects.filter(student=self.request.user).values_list('course_id', flat=True)
+        qs = Lesson.objects.filter(
+            module__course_id__in=enrolled_course_ids,
+            module__course__status=Course.Status.PUBLISHED,
+        ).select_related('module', 'module__course').order_by('module__course__title', 'module__order', 'order', 'id')
+        q = self.request.GET.get('q', '').strip()
+        if q:
+            qs = qs.filter(Q(title__icontains=q) | Q(module__course__title__icontains=q))
+        return qs
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        user = self.request.user
+        ctx['completed_lesson_ids'] = set(
+            LessonProgress.objects.filter(enrollment__student=user, completed=True).values_list('lesson_id', flat=True)
+        )
+        ctx['enrollments'] = Enrollment.objects.filter(student=user).select_related('course')
+        ctx['q'] = self.request.GET.get('q', '').strip()
+        return ctx
+
+
 class CourseListView(ListView):
     model = Course
     template_name = 'courses/course_list.html'

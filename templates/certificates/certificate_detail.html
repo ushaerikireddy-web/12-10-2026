@@ -1,10 +1,24 @@
 {% extends "base.html" %}
-{% block content %}<h2>Certificate {{ certificate.certificate_id }}</h2>
-<div class="card"><div class="card-body">
-<p><strong>Student:</strong> {{ certificate.student.username }}</p>
-<p><strong>Course:</strong> {{ certificate.course.title }}</p>
-<p><strong>Instructor:</strong> {{ certificate.instructor_name }}</p>
-<p><strong>Issued:</strong> {{ certificate.issue_date }}</p>
-<a class="btn btn-primary" href="{% url 'certificates:certificate-download' certificate.pk %}">Download PDF</a>
-</div></div>
+{% block title %}Certificate {{ certificate.certificate_id }} — VIDYA{% endblock %}
+{% block content %}
+<div class="vidya-certificate text-center mx-auto" style="max-width:820px">
+  <div class="d-flex justify-content-center mb-2"><span class="vidya-logo-badge" style="width:56px;height:56px;font-size:1.8rem"><i class="bi bi-mortarboard-fill"></i></span></div>
+  <p class="mb-0" style="letter-spacing:.3em;font-size:.75rem;color:#7a5f0a">VIDYA · WHERE KNOWLEDGE BECOMES POWER</p>
+  <h1 class="display-6 fw-bold">Certificate of Completion</h1>
+  <p class="text-muted">This certificate is proudly presented to</p>
+  <h2 class="fw-bold text-success">{{ certificate.student.get_full_name|default:certificate.student.username }}</h2>
+  <p>for successfully completing</p>
+  <h3 class="fw-bold">{{ certificate.course.title }}</h3>
+  <p class="text-muted small">Instructor: {{ certificate.instructor_name }} · Issued {{ certificate.issue_date|date:"F d, Y" }}</p>
+  <div class="d-flex justify-content-between align-items-center mt-4">
+    <div class="text-start small">Certificate ID<br><code>{{ certificate.certificate_id }}</code><br><a href="{% url 'certificates:certificate-verify-code' certificate.certificate_id %}">Verify online</a></div>
+    <div class="seal"><i class="bi bi-award-fill"></i></div>
+    <div class="text-end small">VIDYA Registrar<br>_________________<br>Authorised signature</div>
+  </div>
+</div>
+<div class="text-center mt-3 vidya-no-print">
+  <button id="vidya-print-cert" class="btn btn-gold"><i class="bi bi-printer me-1"></i>Print / Save as PDF</button>
+  <a class="btn btn-emerald" href="{% url 'certificates:certificate-download' certificate.pk %}"><i class="bi bi-download me-1"></i>Download Server PDF</a>
+  <a class="btn btn-outline-secondary" href="{% url 'certificates:certificate-list' %}">My Certificates</a>
+</div>
 {% endblock %}
