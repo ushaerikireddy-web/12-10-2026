@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ assignment.title }} — {{ PLATFORM_NAME }}{% endblock %}
+{% block content %}
+<h2>{{ assignment.title }}</h2>
+<p class="text-muted">{{ assignment.course.title }} · Max {{ assignment.max_marks }} · Due {{ assignment.due_date|default:"—" }} {% if assignment.is_overdue %}<span class="badge bg-danger">Overdue</span>{% endif %}</p>
+<p>{{ assignment.instructions|linebreaks }}</p>
+{% if assignment.attachment %}<p><a href="{{ assignment.attachment.url }}">Download attachment</a></p>{% endif %}
+{% if can_manage %}
+<a class="btn btn-sm btn-outline-primary" href="{% url 'assignments:assignment-edit' assignment.pk %}">Edit</a>
+<h4 class="mt-4">Submissions ({{ submissions|length }})</h4>
+<table class="table table-striped"><tr><th>Student</th><th>Status</th><th>Marks</th><th>Late</th><th></th></tr>
+{% for s in submissions %}<tr><td>{{ s.student.username }}</td><td>{{ s.status }}</td><td>{{ s.marks|default:"—" }}</td><td>{{ s.is_late|yesno:"Yes,No" }}</td><td><a href="{% url 'assignments:submission-grade' s.pk %}">Grade</a></td></tr>{% empty %}<tr><td colspan="5">No submissions yet.</td></tr>{% endfor %}</table>
+{% else %}
+<h4>Your Submission</h4>
+{% if my_submission %}
+<div class="card"><div class="card-body">
+<p>Status: <strong>{{ my_submission.status }}</strong> {% if my_submission.is_late %}<span class="badge bg-warning">Late</span>{% endif %}</p>
+{% if my_submission.marks is not None %}<p>Marks: <strong>{{ my_submission.marks }} / {{ assignment.max_marks }}</strong></p><p>Feedback: {{ my_submission.feedback|default:"—"|linebreaks }}</p>{% endif %}
+<a class="btn btn-outline-primary" href="{% url 'assignments:submission-create' assignment.pk %}">Update Submission</a>
+</div></div>
+{% else %}
+<a class="btn btn-primary" href="{% url 'assignments:submission-create' assignment.pk %}">Submit Answer</a>
+{% endif %}
+{% endif %}
+{% endblock %}

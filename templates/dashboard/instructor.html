@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Instructor Dashboard — {{ PLATFORM_NAME }}{% endblock %}
+{% block content %}<h2>Instructor Dashboard</h2>
+<p>Total students: <strong>{{ total_students }}</strong> · Avg progress: <strong>{{ avg_progress|floatformat:1 }}%</strong></p>
+<h4>My Courses</h4>
+<table class="table table-striped"><tr><th>Course</th><th>Status</th><th>Enrollments</th><th></th></tr>
+{% for c in courses %}<tr><td><a href="{{ c.get_absolute_url }}">{{ c.title }}</a></td><td>{{ c.status }}</td><td>{{ c.enrollment_count }}</td><td><a href="{% url 'courses:course-edit' c.slug %}">Manage</a></td></tr>{% empty %}<tr><td colspan="4">No courses. <a href="{% url 'courses:course-create' %}">Create one</a></td></tr>{% endfor %}</table>
+<h4>Pending Reviews</h4>
+<table class="table"><tr><th>Student</th><th>Assignment</th><th>Submitted</th><th></th></tr>
+{% for s in pending_reviews %}<tr><td>{{ s.student.username }}</td><td>{{ s.assignment.title }}</td><td>{{ s.submitted_at }}</td><td><a href="{% url 'assignments:submission-grade' s.pk %}">Review</a></td></tr>{% empty %}<tr><td colspan="4">Nothing to review.</td></tr>{% endfor %}</table>
+{% endblock %}

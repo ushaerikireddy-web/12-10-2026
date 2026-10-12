@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block title %}My Certificates — {{ PLATFORM_NAME }}{% endblock %}
+{% block content %}<h2>My Certificates</h2>
+<ul class="list-group">{% for c in certificates %}<li class="list-group-item d-flex justify-content-between"><a href="{% url 'certificates:certificate-detail' c.pk %}">{{ c.course.title }} — {{ c.certificate_id }}</a><a class="btn btn-sm btn-outline-primary" href="{% url 'certificates:certificate-download' c.pk %}">Download</a></li>{% empty %}<li class="list-group-item">No certificates yet. Complete a course to earn one.</li>{% endfor %}</ul>
+{% endblock %}

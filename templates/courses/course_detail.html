@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}{{ course.title }} — {{ PLATFORM_NAME }}{% endblock %}
+{% block content %}
+<h2>{{ course.title }}</h2>
+<p class="text-muted">By {{ course.instructor.username }} · {{ course.difficulty }} · {{ course.category|default:"Uncategorized" }} · {% if course.is_free %}Free{% else %}${{ course.price }}{% endif %}</p>
+<p>{{ course.description|linebreaks }}</p>
+{% if user.is_authenticated %}
+  {% if enrollment %}
+    <div class="alert alert-success">Enrolled — Progress: {{ enrollment.progress }}% {% if enrollment.completed %}(Completed ✓){% endif %}</div>
+    {% if enrollment.completed %}
+    <form method="post" action="{% url 'certificates:certificate-generate' course.id %}" class="mb-3">{% csrf_token %}<button class="btn btn-warning">Get Certificate</button></form>
+    {% endif %}
+  {% else %}
+    {% if course.status == "PUBLISHED" %}<form method="post" action="{% url 'courses:course-enroll' course.slug %}">{% csrf_token %}<button class="btn btn-primary">Enroll Now</button></form>{% endif %}
+  {% endif %}
+{% else %}<p><a href="{% url 'accounts:login' %}">Login to enroll</a></p>{% endif %}
+{% if is_owner %}
+<div class="mt-2"><a class="btn btn-sm btn-outline-primary" href="{% url 'courses:course-edit' course.slug %}">Edit</a>
+<a class="btn btn-sm btn-outline-secondary" href="{% url 'courses:module-create' course.slug %}">+ Module</a></div>
+{% endif %}
+<hr>
+<h4>Curriculum</h4>
+{% for module in course.modules.all %}
+<div class="card mb-2"><div class="card-header d-flex justify-content-between"><strong>{{ module.order }}. {{ module.title }}</strong>{% if is_owner %}<span><a href="{% url 'courses:module-edit' course.slug module.id %}">Edit</a> · <a href="{% url 'courses:lesson-create' course.slug module.id %}">+ Lesson</a></span>{% endif %}</div>
+<ul class="list-group list-group-flush">
+{% for lesson in module.lessons.all %}
+<li class="list-group-item d-flex justify-content-between">
+<span>{% if lesson.id in completed_lesson_ids %}✓ {% endif %}{{ lesson.order }}. {{ lesson.title }} <small class="text-muted">({{ lesson.duration }}s)</small></span>
+<span>{% if enrollment or is_owner %}<a href="{% url 'courses:lesson-detail' lesson.pk %}">Watch</a>{% else %}<em>Enroll to watch</em>{% endif %}{% if is_owner %} · <a href="{% url 'courses:lesson-edit' course.slug lesson.pk %}">Edit</a>{% endif %}</span>
+</li>
+{% empty %}<li class="list-group-item">No lessons yet.</li>{% endfor %}
+</ul></div>
+{% empty %}<p>No modules yet.</p>{% endfor %}
+<hr>
+<h4>Assignments</h4>
+<ul class="list-group">{% for a in published_assignments %}<li class="list-group-item"><a href="{% url 'assignments:assignment-detail' a.pk %}">{{ a.title }}</a> <small class="text-muted">due {{ a.due_date|default:"—" }}</small></li>{% empty %}<li class="list-group-item">No assignments.</li>{% endfor %}</ul>
+{% endblock %}

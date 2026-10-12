@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}<h2>Grade: {{ object.student.username }} — {{ object.assignment.title }}</h2>
+<p>{{ object.answer_text|linebreaks }}</p>
+{% if object.file %}<p><a href="{{ object.file.url }}">Download submitted file</a></p>{% endif %}
+<form method="post">{% csrf_token %}{{ form.as_p }}<button class="btn btn-primary">Save Grade</button></form>
+{% endblock %}

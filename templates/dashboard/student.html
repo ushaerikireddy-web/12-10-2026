@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Student Dashboard — {{ PLATFORM_NAME }}{% endblock %}
+{% block content %}<h2>Student Dashboard</h2>
+<div class="row">
+<div class="col-md-6"><h4>Enrolled Courses</h4>
+{% for e in enrollments %}<div class="card mb-2"><div class="card-body"><a href="{{ e.course.get_absolute_url }}"><strong>{{ e.course.title }}</strong></a>
+<div class="progress mt-2"><div class="progress-bar" style="width:{{ e.progress }}%">{{ e.progress }}%</div></div>
+{% if e.completed %}<span class="badge bg-success mt-2">Completed</span>{% endif %}</div></div>
+{% empty %}<p>No enrollments. <a href="{% url 'courses:course-list' %}">Browse courses</a></p>{% endfor %}</div>
+<div class="col-md-6"><h4>Pending Assignments</h4>
+<ul class="list-group mb-3">{% for a in pending_assignments %}<li class="list-group-item"><a href="{% url 'assignments:assignment-detail' a.pk %}">{{ a.course.title }} — {{ a.title }}</a></li>{% empty %}<li class="list-group-item">Nothing pending 🎉</li>{% endfor %}</ul>
+<h4>Recent Lessons</h4>
+<ul class="list-group mb-3">{% for p in recent_lessons %}<li class="list-group-item"><a href="{% url 'courses:lesson-detail' p.lesson.pk %}">{{ p.lesson.title }}</a> <small class="text-muted">{{ p.lesson.module.course.title }}</small></li>{% empty %}<li class="list-group-item">No activity yet.</li>{% endfor %}</ul>
+<h4>Marks & Feedback</h4>
+<ul class="list-group mb-3">{% for s in my_submissions %}<li class="list-group-item">{{ s.assignment.title }}: <strong>{{ s.marks|default:"pending" }}</strong> <small class="text-muted">{{ s.feedback|truncatewords:10 }}</small></li>{% empty %}<li class="list-group-item">No submissions.</li>{% endfor %}</ul>
+<h4>Certificates</h4>
+<ul class="list-group">{% for c in certificates %}<li class="list-group-item"><a href="{% url 'certificates:certificate-detail' c.pk %}">{{ c.course.title }}</a></li>{% empty %}<li class="list-group-item">No certificates yet.</li>{% endfor %}</ul>
+</div></div>
+{% endblock %}

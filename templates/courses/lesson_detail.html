@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ lesson.title }} — {{ PLATFORM_NAME }}{% endblock %}
+{% block content %}
+<p><a href="{{ course.get_absolute_url }}">← {{ course.title }}</a></p>
+<h2>{{ lesson.title }}</h2>
+<p>{{ lesson.description|linebreaks }}</p>
+{% if lesson.video_url %}
+<div class="ratio ratio-16x9 mb-3">
+{% if "youtube" in lesson.video_url or "youtu.be" in lesson.video_url %}
+<iframe src="{{ lesson.video_url }}" allowfullscreen></iframe>
+{% else %}
+<video controls src="{{ lesson.video_url }}" class="w-100"></video>
+{% endif %}
+</div>
+{% endif %}
+{% if lesson.video_file %}<video controls src="{{ lesson.video_file.url }}" class="w-100 mb-3"></video>{% endif %}
+{% if enrollment %}
+<form method="post" action="{% url 'courses:lesson-complete' lesson.pk %}">{% csrf_token %}
+<button class="btn btn-success">{% if progress_record and progress_record.completed %}Completed ✓ (click to refresh){% else %}Mark as Complete{% endif %}</button></form>
+<div class="mt-3 d-flex justify-content-between">
+<div>{% if prev_lesson %}<a class="btn btn-outline-secondary" href="{% url 'courses:lesson-detail' prev_lesson.pk %}">← {{ prev_lesson.title }}</a>{% endif %}</div>
+<div>{% if next_lesson %}<a class="btn btn-outline-primary" href="{% url 'courses:lesson-detail' next_lesson.pk %}">{{ next_lesson.title }} →</a>{% endif %}</div>
+</div>
+{% endif %}
+{% endblock %}

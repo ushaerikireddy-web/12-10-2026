@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}About — {{ PLATFORM_NAME }}{% endblock %}
+{% block content %}<h2>{{ about.title|default:"About Us" }}</h2>
+{% if about %}<h4>Mission</h4><p>{{ about.mission|linebreaks }}</p><h4>Vision</h4><p>{{ about.vision|linebreaks }}</p><h4>Learning Objectives</h4><p>{{ about.objectives|linebreaks }}</p><h4>History</h4><p>{{ about.history|linebreaks }}</p>
+{% else %}<p>Welcome to {{ PLATFORM_NAME }}, an online learning platform. Content coming soon.</p>{% endif %}
+{% endblock %}

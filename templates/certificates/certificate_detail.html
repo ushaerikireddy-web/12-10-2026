@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}<h2>Certificate {{ certificate.certificate_id }}</h2>
+<div class="card"><div class="card-body">
+<p><strong>Student:</strong> {{ certificate.student.username }}</p>
+<p><strong>Course:</strong> {{ certificate.course.title }}</p>
+<p><strong>Instructor:</strong> {{ certificate.instructor_name }}</p>
+<p><strong>Issued:</strong> {{ certificate.issue_date }}</p>
+<a class="btn btn-primary" href="{% url 'certificates:certificate-download' certificate.pk %}">Download PDF</a>
+</div></div>
+{% endblock %}

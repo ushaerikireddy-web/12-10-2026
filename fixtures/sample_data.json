@@ -1,0 +1,25 @@
+[
+  {
+    "model": "courses.category",
+    "pk": 1,
+    "fields": {"name": "Programming", "slug": "programming", "description": "Code courses"}
+  },
+  {
+    "model": "courses.category",
+    "pk": 2,
+    "fields": {"name": "Design", "slug": "design", "description": "Design courses"}
+  },
+  {
+    "model": "pages.aboutus",
+    "pk": 1,
+    "fields": {
+      "title": "About LearnHub",
+      "mission": "Make quality education accessible to everyone.",
+      "vision": "A world where anyone can learn anything.",
+      "objectives": "Learn by doing\nBuild real projects\nEarn verified certificates",
+      "history": "Founded as a demo learning platform.",
+      "is_published": true,
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  }
+]

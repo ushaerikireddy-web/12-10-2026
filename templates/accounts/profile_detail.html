@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Profile — {{ PLATFORM_NAME }}{% endblock %}
+{% block content %}
+<h2>Profile</h2>
+<div class="card"><div class="card-body">
+<p><strong>Username:</strong> {{ profile.user.username }} | <strong>Role:</strong> {{ profile.user.role }}</p>
+<p><strong>Name:</strong> {{ profile.display_name }} | <strong>Email:</strong> {{ profile.user.email }}</p>
+<p><strong>Bio:</strong> {{ profile.bio|default:"—" }}</p>
+{% if profile.photo %}<img src="{{ profile.photo.url }}" class="img-thumbnail" style="max-width:200px">{% endif %}
+<a class="btn btn-primary mt-3" href="{% url 'accounts:profile-edit' %}">Edit Profile</a>
+</div></div>
+<h4 class="mt-4">Enrolled Courses</h4>
+<ul class="list-group">{% for e in enrollments %}<li class="list-group-item"><a href="{{ e.course.get_absolute_url }}">{{ e.course.title }}</a> — {{ e.progress }}% {% if e.completed %}✓{% endif %}</li>{% empty %}<li class="list-group-item">No enrollments yet.</li>{% endfor %}</ul>
+{% endblock %}
