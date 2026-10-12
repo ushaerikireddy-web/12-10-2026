@@ -20,6 +20,11 @@ class CustomLoginView(LoginView):
 
 class CustomLogoutView(LogoutView):
     next_page = reverse_lazy('courses:course-list')
+    # Allow GET (navbar/sidebar use plain links) — logs out and lands on home.
+    http_method_names = ['get', 'post', 'options']
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
 
 class StudentRegisterView(CreateView):
